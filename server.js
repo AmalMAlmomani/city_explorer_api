@@ -5,12 +5,14 @@
 require('dotenv').config();
 
 //require some file from express, library
+//we use it to create your own server
 const express = require('express');
 
 //this will help us to do the interaction between frontend and backend, this will tell our server where to accept the request from and who to response to.
 const cors = require('cors');
 
 //the port that will run our application on, something related for node that will running on our heroku server 
+// env - stand to enviroment variable
 const PORT = process.env.PORT || 4000;
 
 //express have property, that will run our server 
@@ -31,6 +33,7 @@ app.get('/location',(request,response) => {
     try{ 
     const geoData = require('./data/geo.json');
     const city = request.query.city;
+    //make the constructor to formate the data
     const locationData = new Location(city, geoData);
     response.status(200).json(locationData);
     // console.log('DATA:', geoData);
@@ -54,7 +57,7 @@ app.get('/location',(request,response) => {
           const weather = request.query.weather;
           geoData.data.forEach(value => {
               let weatherDescription = value.weather.description;
-              let dateDay = value.valid_date;
+              let dateDay = new Date(value.valid_date).toDateString();
                const weatherData = new Weather(weatherDescription, dateDay);
                arrWeather.push(weatherData);
           });
@@ -122,6 +125,7 @@ app.listen(PORT,() => console.log(`the server is up and running on ${PORT}`));
 //     response.status(200).json(data);
 // });
 
-//how we responding 
+
+
 
 
